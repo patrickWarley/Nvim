@@ -1,26 +1,42 @@
--- Only required if you have packer configurod as `opt`
-vim.cmd [[packadd packer.nvim]]
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-return require('packer').startup(function(use)
-	-- Packer can manage itself
-	use 'wbthomason/packer.nvim'
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.3',
-		-- or                            , branch = '0.1.x',
-		requires = { {'nvim-lua/plenary.nvim'} }
-	}
-	use({ 'rose-pine/neovim', as = 'rose-pine' })
-    use ('ThePrimeagen/vim-be-good')
 
-	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-	use('nvim-treesitter/playground')
-	use('ThePrimeagen/harpoon')
-	use('mbbill/undotree')
-	use('tpope/vim-fugitive')
-	use {
+vim.g.mapleader = " "
+
+return require('lazy').setup({
+    'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope.nvim',
+    'ThePrimeagen/vim-be-good',
+    'nvim-treesitter/playground',
+    'ThePrimeagen/harpoon',
+    'mbbill/undotree',
+    'tpope/vim-fugitive',
+    {
+        "rose-pine/neovim",
+        name="rose-pine",
+        config = function()
+            vim.cmd('colorscheme rose-pine');
+        end
+    },
+    {
+        'nvim-treesitter/nvim-treesitter',
+        build = ":TSUpdate",
+    },
+        {
 		'VonHeikemen/lsp-zero.nvim',
 		branch = 'v1.x',
-		requires = {
+		dependencies = {
 			-- LSP Support
 			{'neovim/nvim-lspconfig'},             -- Required
 			{'williamboman/mason.nvim'},           -- Optional
@@ -38,4 +54,5 @@ return require('packer').startup(function(use)
 			{'L3MON4D3/LuaSnip'},             -- Required
 			{'rafamadriz/friendly-snippets'}, -- Optional
 		}
-	}end)
+	},
+})
