@@ -1,3 +1,8 @@
+vim.cmd('set shell=C:/Users/patri/AppData/Local/Microsoft/WindowsApps/Microsoft.PowerShell_8wekyb3d8bbwe/pwsh.exe')
+vim.cmd('set shellcmdflag=-command')
+vim.cmd('set shellquote=\"')
+vim.cmd('set shellxquote=')
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
